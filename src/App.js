@@ -1,18 +1,37 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Movie from './components/Movie';
+import API from './api';
 
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  componentDidMount() {
+    this.getMovies();
+  }
+
+  async getMovies() {
+    const movies = await API.getMoviesAPI();
+    console.log(movies)
+    this.setState({
+      movies
+    });
+  }
+
+  renderList() {
+    return this.state.movies.map(movie => {
+      return <Movie key={movie.id} title={movie.title} />
+    });
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        {this.state.movies ? this.renderList() : 'Loading...'}
       </div>
     );
   }
