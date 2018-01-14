@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import Movie from './components/Movie';
+import MovieList from './components/MovieList';
 import API from './api';
 
 class App extends Component {
@@ -16,22 +16,21 @@ class App extends Component {
 
   async getMovies() {
     const movies = await API.getMoviesAPI();
-    console.log(movies)
     this.setState({
       movies
-    });
-  }
-
-  renderList() {
-    return this.state.movies.map(movie => {
-      return <Movie key={movie.id} title={movie.title} />
     });
   }
 
   render() {
     return (
       <div className="App">
-        {this.state.movies ? this.renderList() : 'Loading...'}
+        <div className="container">
+          {
+            this.state.movies
+            ? <MovieList movies={this.state.movies} />
+            : <h5>Loading...</h5>
+          }
+        </div>
       </div>
     );
   }
